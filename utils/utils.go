@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"time"
 )
 
 var defaultValue = map[string]string{
@@ -26,6 +27,16 @@ func GetKey(ctx context.Context, key string) string {
 	if err != nil {
 		fmt.Println(err)
 		return defaultValue[key]
+	}
+	return value
+}
+
+func SetKey(ctx context.Context, key string, value string) string {
+	cli := GetRedisClient()
+	err := cli.Set(ctx, key, value, 24*365*100*time.Hour).Err()
+	if err != nil {
+		fmt.Println(err)
+		return err.Error()
 	}
 	return value
 }

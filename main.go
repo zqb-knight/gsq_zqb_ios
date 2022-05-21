@@ -10,10 +10,21 @@ import (
 func main() {
 	r := gin.Default()
 	r.GET("/get_data", func(c *gin.Context) {
-		fmt.Println("server start")
+		fmt.Println("get server start")
 		c.JSON(http.StatusOK, gin.H{
 			"img":   controller.GetImageData(c),
 			"title": controller.GetTitleData(c),
+		})
+
+	})
+	r.GET("/set_data", func(c *gin.Context) {
+		fmt.Println("set server start")
+		img, _ := c.GetQuery("img")
+		title, _ := c.GetQuery("title")
+
+		c.JSON(http.StatusOK, gin.H{
+			"img":   controller.SetImageData(c, img),
+			"title": controller.SetTitleData(c, title),
 		})
 
 	})
